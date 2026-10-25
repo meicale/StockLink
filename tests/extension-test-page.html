@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>EasyLink 字母键测试</title>
+    <style>
+        body { max-width: 760px; margin: 30px auto; padding: 0 16px; font-family: 'Microsoft YaHei', sans-serif; line-height: 1.7; color: #222; }
+        h1 { font-size: 22px; }
+        h2 { margin-top: 28px; font-size: 16px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        input, textarea, [contenteditable] { display: block; width: 100%; box-sizing: border-box; margin: 8px 0; padding: 8px; border: 1px solid #bbb; border-radius: 4px; font: inherit; }
+        [contenteditable] { min-height: 42px; }
+        li { margin: 4px 0; }
+        .hint { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px 12px; }
+    </style>
+</head>
+<body>
+    <h1>EasyLink 字母键测试</h1>
+    <p class="hint">
+        预期：前 26 个唯一代码依次显示 a-z 角标；同一代码多次出现共用同一字母；第 27 个起没有角标，但仍可点击和悬停发送。
+        在下方输入框、文本域、可编辑区域中按字母不应触发发送。
+    </p>
+
+    <h2>输入控件</h2>
+    <input id="text-input" type="text" placeholder="文本输入框">
+    <textarea placeholder="文本域"></textarea>
+    <div contenteditable="true">可编辑区域</div>
+
+    <h2>30 个唯一股票</h2>
+    <ul id="stocks">
+        <li>浦发银行 600000</li>
+        <li>白云机场 600004</li>
+        <li>东风股份 600006</li>
+        <li>中国国贸 600007</li>
+        <li>首创环保 600008</li>
+        <li>上海机场 600009</li>
+        <li>包钢股份 600010</li>
+        <li>皖通高速 600012</li>
+        <li>华夏银行 600015</li>
+        <li>XD民生银 600016</li>
+        <li>日照港 600017</li>
+        <li>上港集团 600018</li>
+        <li>宝钢股份 600019</li>
+        <li>中原高速 600020</li>
+        <li>上海电力 600021</li>
+        <li>山东钢铁 600022</li>
+        <li>浙能电力 600023</li>
+        <li>华能水电 600025</li>
+        <li>中国石化 600028</li>
+        <li>南方航空 600029</li>
+        <li>中信证券 600030</li>
+        <li>三一重工 600031</li>
+        <li>浙江新能 600032</li>
+        <li>福建高速 600033</li>
+        <li>楚天高速 600035</li>
+        <li>歌华有线 600037</li>
+        <li>中直股份 600038</li>
+        <li>四川路桥 600039</li>
+        <li>保利发展 600048</li>
+        <li>宁波联合 600051</li>
+    </ul>
+
+    <h2>重复代码</h2>
+    <p>浦发银行 600000 再次出现，应与列表第一项共用同一个字母。</p>
+    <p>中信证券 600030 再次出现，应与列表第 21 项共用同一个字母。</p>
+</body>
+</html>

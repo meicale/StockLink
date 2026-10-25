@@ -78,6 +78,14 @@ python app.py
 3. 点击「加载已解压的扩展程序」
 4. 选择 `extension/` 目录
 
+### 5. 使用字母键联动
+
+- 页面中识别到的唯一股票代码会按出现顺序标记为 `a-z`；
+- 在页面空白处按对应字母，即可把该股票代码发送到已启用的行情软件；
+- 同一股票代码在页面中多次出现时共用同一个字母；
+- 超过 26 个唯一股票后，超出部分仍可点击或悬停发送，但不显示字母标记；
+- 在输入框、文本域、可编辑区域中按字母不会触发发送。
+
 ## 主要改进
 
 ### 股票识别算法
@@ -143,6 +151,23 @@ GET http://127.0.0.1:3000/api/status
 ### 修改识别算法
 
 编辑 `extension/content-script.js` 中的 `ImprovedStockRecognizer` 类。
+
+### 运行扩展测试
+
+```bash
+npm install --prefix /tmp/easylink-jsdom jsdom --no-audit --no-fund
+NODE_PATH=/tmp/easylink-jsdom/node_modules node --test tests/*.test.js
+```
+
+集成测试依赖 `jsdom`；未安装时集成测试会自动跳过，纯逻辑测试仍可运行。
+
+手动测试页面：
+
+```bash
+python3 -m http.server 8000 --directory tests
+```
+
+打开 `http://127.0.0.1:8000/extension-test-page.html` 和 `http://127.0.0.1:8000/extension-dynamic-test.html`，在已加载扩展的 Chrome/Edge 中验证。
 
 ## 已知问题
 

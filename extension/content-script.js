@@ -6,6 +6,13 @@ console.log('[EasyLink] content-script.js 已加载');
     const ATTR = 'data-wzs-linker';
     const SKIP_WORDS = new Set(['机器人']);
 
+    const keyUtils = window.EasyLinkKeyUtils;
+    if (!keyUtils) {
+        console.error('[EasyLink] key-utils.js 未加载');
+        return;
+    }
+    const { KeyRegistry, isEditableElement } = keyUtils;
+
     class StockRecognizer {
         constructor() {
             this.stockData = {};
@@ -15,6 +22,8 @@ console.log('[EasyLink] content-script.js 已加载');
             this.nameRegex = null;
             this.stockCodeRegex = /(00[0-9]{4}|30[0-9]{4}|60[0-9]{4}|68[0-9]{4}|92[0-9]{4})/g;
             this._retryCount = 0;
+            this.keys = new KeyRegistry();
+            this._keyWarned = false;
         }
 
         async init() {
@@ -28,6 +37,7 @@ console.log('[EasyLink] content-script.js 已加载');
             this.processPage();
             this.observeChanges();
             this.bindGlobalClick();
+            this.bindKeyboardShortcuts();
             console.log('[EasyLink] 初始化完成');
         }
 
@@ -101,6 +111,11 @@ console.log('[EasyLink] content-script.js 已加载');
             wrapper.setAttribute(ATTR, code);
             wrapper.dataset.stockCode = code;
             wrapper.dataset.stockName = name;
+            const key = this.assignKey(code, name);
+            if (key) {
+                wrapper.dataset.stockKey = key;
+                wrapper.title = name + '(' + code + ') · 按 ' + key + ' 联动';
+            }
             wrapper.style.cssText = 'display:inline;padding:1px 3px;border-radius:3px;cursor:pointer;font-weight:bold;color:#ff6600;background:rgba(255,102,0,0.12);border-bottom:2px solid #ff6600;';
             const self = this;
             wrapper.addEventListener('mouseenter', function() {
@@ -206,6 +221,36 @@ console.log('[EasyLink] content-script.js 已加载');
                 self.sendToDesktop(code, name);
             }, true);
             console.log('[EasyLink] 全局点击监听已绑定');
+        }
+
+        assignKey(code, name) {
+            const key = this.keys.assign(code, name);
+            if (!key && !this._keyWarned) {
+                this._keyWarned = true;
+                console.warn('[EasyLink] 本页唯一股票超过 26 个，超出部分不分配字母键');
+            }
+            return key;
+        }
+
+        bindKeyboardShortcuts() {
+            const self = this;
+            window.addEventListener('keydown', function(e) {
+                if (e.defaultPrevented || e.repeat) return;
+                if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+                if (e.isComposing || e.keyCode === 229) return;
+                if (!/^[a-zA-Z]$/.test(e.key)) return;
+                if (isEditableElement(e.target) || isEditableElement(document.activeElement)) return;
+
+                const key = e.key.toLowerCase();
+                const stock = self.keys.get(key);
+                if (!stock) return;
+
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[EasyLink] 按键联动:', key, stock.name, stock.code);
+                self.sendToDesktop(stock.code, stock.name);
+            }, true);
+            console.log('[EasyLink] 键盘监听已绑定');
         }
 
         async sendToDesktop(code, name) {

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>EasyLink 动态内容测试</title>
+    <style>
+        body { max-width: 760px; margin: 30px auto; padding: 0 16px; font-family: 'Microsoft YaHei', sans-serif; line-height: 1.7; color: #222; }
+        h1 { font-size: 22px; }
+        button { margin: 4px 8px 4px 0; padding: 6px 12px; font: inherit; cursor: pointer; }
+        li { margin: 4px 0; }
+        .hint { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px 12px; }
+    </style>
+</head>
+<body>
+    <h1>EasyLink 动态内容测试</h1>
+    <p class="hint">
+        初始 5 个唯一股票应显示 a-e。点击“追加新股票”后，新股票应显示 f；
+        点击“追加重复股票”后，重复股票应继续使用 a。
+    </p>
+
+    <ul id="stocks">
+        <li>浦发银行 600000</li>
+        <li>白云机场 600004</li>
+        <li>东风股份 600006</li>
+        <li>中国国贸 600007</li>
+        <li>首创环保 600008</li>
+    </ul>
+
+    <button id="append-new" type="button">追加新股票</button>
+    <button id="append-duplicate" type="button">追加重复股票</button>
+
+    <script>
+        document.getElementById('append-new').addEventListener('click', function() {
+            document.getElementById('stocks').insertAdjacentHTML('beforeend', '<li>上海机场 600009</li>');
+        });
+        document.getElementById('append-duplicate').addEventListener('click', function() {
+            document.getElementById('stocks').insertAdjacentHTML('beforeend', '<li>浦发银行 600000</li>');
+        });
+    </script>
+</body>
+</html>

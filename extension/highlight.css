@@ -15,6 +15,25 @@ stock-highlight:hover {
     color: #fff;
     box-shadow: 0 2px 8px rgba(255, 102, 0, 0.4);
 }
+stock-highlight[data-stock-key]::after {
+    content: attr(data-stock-key);
+    display: inline-block;
+    min-width: 1em;
+    margin-left: 3px;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #ff6600;
+    color: #fff;
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+stock-highlight[data-stock-key]:hover::after {
+    background: #fff;
+    color: #ff6600;
+}
 #wzslinker-toast {
     animation: wzs-fadein 0.3s ease;
 }

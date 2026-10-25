@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "EasyLink",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "改进版网页炒股软件联动扩展",
   "icons": {
     "16": "icon16.png",
@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content-script.js"],
+      "js": ["key-utils.js", "content-script.js"],
       "css": ["highlight.css"],
       "run_at": "document_end",
       "all_frames": false
